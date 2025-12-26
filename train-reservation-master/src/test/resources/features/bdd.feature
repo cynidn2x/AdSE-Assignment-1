@@ -1,19 +1,21 @@
 Feature: BDD Feature for Train Reservation System
 
-    @happypaths
+    @happypaths @implementation
     Scenario: Admin can create a new trip
-        Given Arrival time has been created
-        And Departure time has been created
-        And Destination city has been created
-        And Departure city has been created
-        When the Admin attempts to create a new trip
-        Then the system creates a new trip
+        Given Arrival time has been set to "2025-12-26T12:00:00Z"
+        And Departure time has been set to "2025-12-26T10:00:00Z"
+        And Destination city has been set to "Isfahan"
+        And Origin city has been set to "Tehran"
+        When the Admin attempts to create a new trip from "Tehran" to "Isfahan" departing at "2025-12-26T10:00:00Z" and arriving at "2025-12-26T12:00:00Z"
+        Then the system should have created exactly 1 trip
+        And the trip must have "Tehran" as origin and "Isfahan" as destination
 
-    @happypaths
+    @happypaths  @implementation
     Scenario: Admin can delay a trip's arrival time
-        Given a trip has been created by the Admin
-        When the user requests to delay the trip arrival time
-        Then the system adds a delay to the trip arrival time
+        Given a trip exists from "Kerman" to "Yazd" departing at "2025-12-26T10:00:00Z" and arriving at "2025-12-26T12:00:00Z"
+        When the Admin delays the trip arrival time by 4 minutes
+        Then the trip should be marked as delayed
+        And  the arrival delay should be 4 minutes
 
     @happypaths
     Scenario: Admin can delay a trip's departure time
@@ -34,10 +36,10 @@ Feature: BDD Feature for Train Reservation System
         When the user enters departure and destination cities along with travel dates
         Then the system displays a list of available trains matching the criteria
     
-    @exceptionpaths
+    @exceptionpaths @implementation
     Scenario: User cannot book a ticket on a fully booked train
-        Given a trip has been created
-        And the trip has reached maximum passenger capacity
+        Given a trip has been created with capacity of 2 
+        And the trip has reached maximum passenger capacity of 2
         When the user attempts to book a ticket
         Then the system throws a ReservationException indicating no available seats
 
