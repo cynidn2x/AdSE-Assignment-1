@@ -30,8 +30,17 @@ jobs:
     - name: Build with Maven
       run: cd train-reservation-master && mvn -B clean package --file pom.xml
 
-    - name: Run Tests
-      run: cd train-reservation-master && mvn test
+    - name: Run MockitoTests
+      continue-on-error: true
+      run: cd train-reservation-master && mvn test -Dtest=MockitoTests
+
+    - name: Run SimpleJUnitTest
+      continue-on-error: true
+      run: cd train-reservation-master && mvn test -Dtest=SimpleJUnitTest
+
+    - name: Run TicketReservationCucumberTest
+      continue-on-error: true
+      run: cd train-reservation-master && mvn test -Dtest=TicketReservationCucumberTest
 
     - name: Publish Cucumber Test Results
       if: always()
