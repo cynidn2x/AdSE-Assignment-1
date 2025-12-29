@@ -1,1 +1,1 @@
-Recordings of Test Executions is available here.
+Recordings of Test Executions are available here.
