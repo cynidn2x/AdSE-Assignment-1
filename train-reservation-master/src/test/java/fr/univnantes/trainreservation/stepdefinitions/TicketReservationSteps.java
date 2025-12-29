@@ -41,7 +41,7 @@ public class TicketReservationSteps {
 
     @Before
     public void setUp() {
-        timeZone = ZoneId.of("Asia/Tehran");
+        timeZone = ZoneId.systemDefault();
         system = new TicketReservationSystemImpl(timeZone);
         bookedTickets = new ArrayList<>();
         exp = null;
@@ -76,7 +76,8 @@ public class TicketReservationSteps {
     public void adminCreatesTrip(String origin, String destination, String departure, String arrival) throws TripException {
         departureTime = Instant.parse(departure);
         arrivalTime = Instant.parse(arrival);
-
+        train = new TrainImpl("Regional Train", 100);
+        system.addTrain(train);
         trip = system.createTrip(originCity, destinationCity, train, departureTime, arrivalTime);
         assertNotNull("Trip should be created successfully", trip);
     }
